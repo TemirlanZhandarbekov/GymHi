@@ -1,8 +1,12 @@
-class Member {
+class Hi {
     protected String name;
-    protected String age;
+    protected int age;
     protected String membershipType;
-    public Member(String name, String age, String membershipType) {
+}
+
+class Member extends Hi {
+
+    public Member(String name, int age, String membershipType) {
         this.name = name;
         this.age = age;
         this.membershipType = membershipType;
