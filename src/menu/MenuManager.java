@@ -8,6 +8,7 @@ public class MenuManager implements Menu {
     private final ArrayList<Member> members = new ArrayList<>();
     private final ArrayList<Trainer> trainers = new ArrayList<>();
     private final ArrayList<Workout> workouts = new ArrayList<>();
+    private final ArrayList<Gymequipment> gymequipments = new ArrayList();
     private final Scanner scanner = new Scanner(System.in);
     @Override
     public void displayMenu() {
@@ -18,6 +19,8 @@ public class MenuManager implements Menu {
         System.out.println("4. View All Trainers");
         System.out.println("5. Add Workout");
         System.out.println("6. View All Workouts");
+        System.out.println("7. Add gymequipment");
+        System.out.println("8. View gymequipment");
         System.out.println("0. Exit");
         System.out.print("Enter choice: ");
     }
@@ -36,6 +39,8 @@ public class MenuManager implements Menu {
                     case 4 -> viewAllTrainers();
                     case 5 -> addWorkout();
                     case 6 -> viewAllWorkouts();
+                    case 7 -> addGymequipment();
+                    case 8 -> viewAllGymequipment();
                     case 0 -> System.out.println("Thank you! Goodbye!");
                     default -> System.out.println("Invalid choice. Please try again.");
                 }
@@ -202,6 +207,54 @@ public class MenuManager implements Menu {
         System.out.println("\nAll Workouts");
         for (Workout w : workouts) {
             System.out.println(w);
+        }
+    }
+    private void addGymequipment() {
+        try {
+            System.out.println("\nAdd Gymequipment");
+            System.out.println("\nEnter name: ");
+            String titleequipment = scanner.nextLine().trim();
+            if (titleequipment.isEmpty()) {
+                throw new InvalidInputException("there is no such thing");
+            }
+            System.out.println("\nWhat's weight? ");
+            int weight = scanner.nextInt();
+            scanner.nextLine();
+            if (weight <= 0) {
+                throw new InvalidInputException("Nah");
+            }
+            System.out.println("Type: ");
+            System.out.println("1. Dumbell");
+            System.out.println("2. Shtanga");
+            int type = scanner.nextInt();
+            scanner.nextLine();
+            Gymequipment gymequipment = switch (type) {
+                case 1 -> new Gymequipment.Dumbell(titleequipment, weight);
+                case 2 -> new Gymequipment.Shtanga(titleequipment, weight);
+                default -> throw new InvalidInputException("Invalid input");
+            };
+            gymequipments.add(gymequipment);
+            System.out.println("Gymequipment added successfully");
+        }
+        catch (InvalidInputException e){
+            System.out.println("invalid input: " + e.getMessage());
+        }
+        catch (InputMismatchException e){
+            System.out.println("No brainrot");
+            scanner.nextLine();
+        }
+        catch (Exception e) {
+            System.out.println("no such thing " + e.getMessage());
+        }
+    }
+    private void viewAllGymequipment() {
+        if (gymequipments.isEmpty()) {
+            System.out.println("\nNo gymequipment registered yet.");
+            return;
+        }
+        System.out.println("\nAll gymequipment");
+        for (Gymequipment b : gymequipments) {
+            System.out.println(b);
         }
     }
 }
