@@ -1,4 +1,5 @@
 package menu;
+import manageable.Gymequipment;
 import model.*;
 import exception.InvalidInputException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package model;
+package manageable;
 
 public abstract class Gymequipment {
     protected String titleequipment;
