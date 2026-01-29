@@ -1,4 +1,5 @@
 package menu;
+import database.*;
 import manageable.Gymequipment;
 import model.*;
 import exception.InvalidInputException;
@@ -108,51 +109,37 @@ public class MenuManager implements Menu {
     }
     private void addTrainer() {
         try {
-            System.out.println("\nAdd New Trainer");
-            System.out.print("Name: ");
+            System.out.print("Add trainer: ");
             String name = scanner.nextLine().trim();
             if (name.isEmpty()) {
-                throw new InvalidInputException("Trainer name cannot be empty");
+                throw new InvalidInputException("No empty");
             }
-            System.out.print("Trainer ID: ");
-            String id = scanner.nextLine().trim();
+            System.out.print("His id:");
+            String id = scanner.nextline().trim();
             if (id.isEmpty()) {
-                throw new InvalidInputException("Trainer ID cannot be empty");
+                throw new InvalidInputException("No empty");
             }
-            System.out.println("Type:");
-            System.out.println("  1. Personal Trainer");
-            System.out.println("  2. Group Trainer");
-            System.out.print("Choice: ");
+            System.out.print("Choose");
+            System.out.print("1. Personal");
+            System.out.print("2. Group");
             int type = scanner.nextInt();
             scanner.nextLine();
-            Trainer trainer = switch (type) {
-                case 1 -> new Trainer.PersonalTrainer(name, id);
-                case 2 -> new Trainer.GroupTrainer(name, id);
-                default -> throw new InvalidInputException("Invalid trainer type selected");
-            };
-            trainers.add(trainer);
-            System.out.println("Trainer added successfully!");
+            if (type.isEmpty()){
+                throw new InvalidInputException("no empty");
+            }
+            System.out.print("Trainer is added");
+        } catch (InvalidInputException){
+            scanner.nextLine().trim();
+        } catch (InputMismatchException){
+            scanner.nextLine().trim();
+        }catch (Exception e){
+            scanner.nextInt();
         }
-        catch (InvalidInputException e) {
-            System.out.println("Input error: " + e.getMessage());
-        }
-        catch (InputMismatchException e) {
-            System.out.println("Error: Invalid number format for type.");
-            scanner.nextLine();
-        }
-        catch (Exception e) {
-            System.out.println("Unexpected error: " + e.getMessage());
-        }
+
     }
     private void viewAllTrainers() {
-        if (trainers.isEmpty()) {
-            System.out.println("\nNo trainers registered yet.");
-            return;
-        }
-        System.out.println("\n=== All Trainers ===");
-        for (Trainer t : trainers) {
-            System.out.println(t);
-        }
+        System.out.print("Show all members");
+
     }
     private void addWorkout() {
         try {
