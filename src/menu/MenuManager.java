@@ -57,6 +57,7 @@ public class MenuManager implements Menu {
         } while (choice != 0);
         scanner.close();
     }
+    private final MemberDAO memberDAO = new MemberDAO();
     private void addMember() {
         try {
             System.out.println("\nAdd New Member");
@@ -83,8 +84,9 @@ public class MenuManager implements Menu {
                 case 3 -> new Member.SeniorMember(name, id);
                 default -> throw new InvalidInputException("Invalid member type selected");
             };
+            memberDAO.insertMember(member);
             members.add(member);
-            System.out.println("Member added successfully!");
+            System.out.println("Member processed successfully!");
         }
         catch (InvalidInputException e) {
             System.out.println("Input error: " + e.getMessage());
@@ -97,49 +99,51 @@ public class MenuManager implements Menu {
             System.out.println("Unexpected error: " + e.getMessage());
         }
     }
-    private void viewAllMembers() {
-        if (members.isEmpty()) {
-            System.out.println("\nNo members registered yet.");
-            return;
-        }
-        System.out.println("\nAll Members");
-        for (Member m : members) {
-            System.out.println(m);
-        }
+    private void viewAllMembers(){
+        memberDAO.getAllMembers();
     }
     private void addTrainer() {
         try {
-            System.out.print("Add trainer: ");
+            System.out.print("Add trainer name: ");
             String name = scanner.nextLine().trim();
             if (name.isEmpty()) {
-                throw new InvalidInputException("No empty");
+                throw new InvalidInputException("Name cannot be empty");
             }
-            System.out.print("His id:");
-            String id = scanner.nextline().trim();
+            System.out.print("His id: ");
+            String id = scanner.nextLine().trim();
             if (id.isEmpty()) {
-                throw new InvalidInputException("No empty");
+                throw new InvalidInputException("ID cannot be empty");
             }
-            System.out.print("Choose");
-            System.out.print("1. Personal");
-            System.out.print("2. Group");
+            System.out.println("Choose Type:");
+            System.out.println("1. Personal Trainer");
+            System.out.println("2. Group Trainer");
             int type = scanner.nextInt();
             scanner.nextLine();
-            if (type.isEmpty()){
-                throw new InvalidInputException("no empty");
-            }
-            System.out.print("Trainer is added");
-        } catch (InvalidInputException){
-            scanner.nextLine().trim();
-        } catch (InputMismatchException){
-            scanner.nextLine().trim();
-        }catch (Exception e){
-            scanner.nextInt();
+            Trainer trainer = switch (type) {
+                case 1 -> new Trainer.PersonalTrainer(name, id);
+                case 2 -> new Trainer.GroupTrainer(name, id);
+                default -> throw new InvalidInputException("Invalid trainer type");
+            };
+            trainers.add(trainer);
+            System.out.println("Trainer is added successfully!");
+        } catch (InvalidInputException e) {
+            System.out.println("Input error: " + e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("Error: Invalid number format.");
+            scanner.nextLine();
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
         }
-
     }
     private void viewAllTrainers() {
-        System.out.print("Show all members");
-
+        if (trainers.isEmpty()) {
+            System.out.println("\nNo trainers registered yet.");
+            return;
+        }
+        System.out.println("\nAll Trainers:");
+        for (Trainer t : trainers) {
+            System.out.println(t);
+        }
     }
     private void addWorkout() {
         try {
