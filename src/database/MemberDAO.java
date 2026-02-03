@@ -76,16 +76,12 @@ public class MemberDAO {
         }
     }
     public boolean updateMember(Member member) {
-        // Converting String ID to int for the query
         int dbId = Integer.parseInt(member.getId());
-
         String sql = "UPDATE member SET name = ? WHERE member_id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
             statement.setString(1, member.getName());
             statement.setInt(2, dbId);
-
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -127,7 +123,7 @@ public class MemberDAO {
             while (resultSet.next()) {
                 Member member = extractMemberFromResultSet(resultSet);
                 if (member != null) {
-                    memberList.add(member); // Fixed: was adding 'staff'
+                    memberList.add(member);
                 }
             }
             resultSet.close();
@@ -166,15 +162,11 @@ public class MemberDAO {
     }
     public List<Member> searchByMinFee(double minFee) {
         List<Member> memberList = new ArrayList<>();
-        // Using monthly_fee to match your Gym table
         String sql = "SELECT * FROM member WHERE monthly_fee >= ? ORDER BY monthly_fee DESC";
-
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
             statement.setDouble(1, minFee);
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
                 Member member = extractMemberFromResultSet(resultSet);
                 if (member != null) memberList.add(member);
