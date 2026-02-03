@@ -15,7 +15,7 @@ public class MemberDAO {
             case "Student": member = new Member.StudentMember(name, String.valueOf(id)); break;
             case "Premium": member = new Member.PremiumMember(name, String.valueOf(id)); break;
             case "Senior":  member = new Member.SeniorMember(name, String.valueOf(id)); break;
-            default: member = new Member.PremiumMember(name, String.valueOf(id)); break; // Fallback
+            default: member = new Member.PremiumMember(name, String.valueOf(id)); break;
         }
         return member;
     }
